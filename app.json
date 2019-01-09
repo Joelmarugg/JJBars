@@ -1,0 +1,33 @@
+{
+  "expo": {
+    "name": "J&JBars",
+    "description": "Calisthenics Workout App",
+    "slug": "jjbars",
+    "privacy": "public",
+    "sdkVersion": "30.0.0",
+    "android": {
+      "package": "com.JJBars.jjbars",
+      "permissions": ["VIBRATE"]
+    },
+    "platforms": ["ios", "android"],
+    "version": "1.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/iconround.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "packagerOpts": {
+      "assetExts": ["db,mp3"]
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.JJBars.jjbars"
+    }
+  }
+}
