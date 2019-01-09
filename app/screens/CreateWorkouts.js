@@ -32,7 +32,6 @@ import {
 import { connectAlert } from "../components/Alert";
 
 var replacementText = "Choose Your Exercises";
-
 //const exdb = SQLite.openDatabase("exercises.db");
 
 class CreateWorkouts extends Component {
