@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Text, View, Platform, Vibration } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
+import { Audio } from "expo";
 
 import Reps from "../List/Reps";
 import CountDownButton from "../Button/CounDownButton";
@@ -20,6 +21,17 @@ class CountDown extends Component {
       preTimer: false,
       preTime: 3
     };
+  }
+
+  componentDidMount() {
+    Expo.Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DUCK_OTHERS,
+      playsInSilentModeIOS: false,
+      shouldDuckAndroid: false,
+      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DUCK_OTHERS,
+      playThroughEarpieceAndroid: false
+    });
   }
 
   startTimer = () => {
@@ -68,6 +80,7 @@ class CountDown extends Component {
 
   makeSound = async sound => {
     const soundObject = new Expo.Audio.Sound();
+
     try {
       if (sound === "start") {
         await soundObject.loadAsync(require("../../../assets/sounds/Beep.mp3"));
@@ -76,10 +89,13 @@ class CountDown extends Component {
       }
 
       await soundObject.playAsync();
+      await setTimeout(() => {
+        soundObject.stopAsync();
+      }, 1000);
 
       // Your sound is playing!
     } catch (error) {
-      // An error occurred!
+      console.log(error);
     }
   };
 
