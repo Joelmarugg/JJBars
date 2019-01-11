@@ -14,7 +14,9 @@ EStyleSheet.build({
   $primaryWhite: "#ffffff",
   $primaryBlack: "#000100",
   $cancelRed: "#b23232",
+  $cancelRedBorder: "#8a2727",
   $border: "#dee6de",
+  $darkBorder: "#7c9a7c",
   $darkText: "#2b382b",
   $inputText: "#7b997b",
   $primaryFont: font

@@ -18,7 +18,8 @@ const styles = EStyleSheet.create({
   container: {
     padding: 40,
     backgroundColor: "$secondaryGreen",
-
+    borderColor: "$darkBorder",
+    borderWidth: StyleSheet.hairlineWidth,
     alignItems: "center",
     borderRadius: 30
   }

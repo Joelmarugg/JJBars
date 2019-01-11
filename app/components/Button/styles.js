@@ -76,7 +76,7 @@ export default EStyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 30,
 
-    borderColor: "$cancelRed",
+    borderColor: "$cancelRedBorder",
     borderWidth: StyleSheet.hairlineWidth
   },
   RoundButton: {

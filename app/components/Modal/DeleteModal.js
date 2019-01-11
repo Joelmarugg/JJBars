@@ -26,9 +26,11 @@ const DeleteModal = props => {
           <TouchableHighlight>
             <View style={styles.container}>
               {edit ? (
-                <RoundButton onPress={onEditPress} buttonText={"  Edit  "} />
+                <View style={{ paddingBottom: 20 }}>
+                  <RoundButton onPress={onEditPress} buttonText={"  Edit  "} />
+                </View>
               ) : null}
-              <View style={{ padding: 20 }} />
+
               <RoundButton onPress={onDeletePress} buttonText={"Delete"} />
               <View style={{ padding: 20 }} />
               <RoundButton
