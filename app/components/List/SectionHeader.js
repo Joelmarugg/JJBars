@@ -12,19 +12,29 @@ const SectionHeader = ({
   delayLongPress,
   selected = false,
   number = 3,
-  repText = "reps"
+  repText = "reps",
+  editing = false
 }) => (
   <TouchableHighlight
     onPress={onPress}
     onLongPress={onLongPress}
     delayLongPress={delayLongPress}
     style={{ borderRadius: 10 }}
+    editing={editing}
   >
-    <View style={styles.round}>
-      <Text style={styles.roundText}>{text}</Text>
+    {editing ? (
+      <View style={styles.editinground}>
+        <Text style={styles.editingroundText}>{text}</Text>
 
-      {selected ? <Reps number={number} repText={repText} /> : null}
-    </View>
+        {selected ? <Reps number={number} repText={repText} /> : null}
+      </View>
+    ) : (
+      <View style={styles.round}>
+        <Text style={styles.roundText}>{text}</Text>
+
+        {selected ? <Reps number={number} repText={repText} /> : null}
+      </View>
+    )}
   </TouchableHighlight>
 );
 

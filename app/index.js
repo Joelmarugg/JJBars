@@ -13,7 +13,7 @@ EStyleSheet.build({
   $lightGreen: "#f4f7f4",
   $primaryWhite: "#ffffff",
   $primaryBlack: "#000100",
-  $cancelRed: "#b23232",
+  $cancelRed: "#9b111e",
   $cancelRedBorder: "#8a2727",
   $border: "#dee6de",
   $darkBorder: "#7c9a7c",

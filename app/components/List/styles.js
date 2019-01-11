@@ -88,10 +88,27 @@ const styles = EStyleSheet.create({
     borderBottomColor: "$border",
     borderBottomWidth: StyleSheet.hairlineWidth
   },
+  editinground: {
+    paddingVertical: 10,
+    paddingLeft: 20,
+    paddingRight: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "$cancelRed",
+    borderRadius: 10,
+    borderBottomColor: "$cancelRedBorder",
+    borderBottomWidth: StyleSheet.hairlineWidth
+  },
   roundText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "$darkText"
+  },
+  editingroundText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "$primaryWhite"
   },
   loadingIconText: {
     fontSize: 12,

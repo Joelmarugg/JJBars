@@ -55,6 +55,8 @@ class CreateWorkouts extends Component {
       numberOfRounds: 3,
       roundReps: false,
       edit: false,
+      RoundEdit: false,
+      editSection: null,
       isSection: false,
       sections: [
         {
@@ -330,6 +332,9 @@ class CreateWorkouts extends Component {
   }
 
   deleteItem = item => {
+    if (this.state.RoundEdit) {
+      this.setState({ RoundEdit: false });
+    }
     if (this.state.isSection) {
       if (this.state.sections.length === 1) {
         var lastarray = this.state.sections.slice(); // make a separate copy of the array
@@ -417,15 +422,48 @@ class CreateWorkouts extends Component {
     }
   };
 
+  setRoundEditable = section => {
+    //console.warn(section);
+    if (this.state.RoundEdit) {
+      var newSect = this.state.editSection;
+      newSect.edit = false;
+    }
+
+    section.edit = true;
+
+    this.setState({
+      RoundEdit: true,
+      editSection: section,
+      ownExerciseList: section.data
+    });
+  };
+
   //update the section
   inList() {
-    let leng = this.state.sections.length - 1;
-    const newSect = this.state.sections.slice();
-    newSect[leng].data = this.state.ownExerciseList;
-    this.setState({ section: newSect });
+    if (this.state.RoundEdit) {
+      var name = this.state.editSection.title;
+      var array = name.match(/\d+/g).map(Number);
+      var number = parseInt(array);
 
-    this.scrollToEnd(true);
-    console.log("scroll ex");
+      const newSect = this.state.sections.slice();
+      newSect[number - 1].data = this.state.ownExerciseList;
+      this.setState({ section: newSect });
+
+      this.scrollToEnd(true);
+      /*console.warn(
+        newSect[number - 1].data,
+        "aaaaaaaaa",
+        this.state.ownExerciseList
+      );*/
+    } else {
+      let leng = this.state.sections.length - 1;
+      const newSect = this.state.sections.slice();
+      newSect[leng].data = this.state.ownExerciseList;
+      this.setState({ section: newSect });
+
+      this.scrollToEnd(true);
+      console.log("scroll ex");
+    }
   }
 
   scrollToEnd(animated) {
@@ -482,7 +520,11 @@ class CreateWorkouts extends Component {
 
   // add rounds to the workout
   handlePressAddButton = () => {
-    this.setState({ count: this.state.sections.length + 1 });
+    if (this.state.RoundEdit) {
+      var newSect = this.state.editSection;
+      newSect.edit = false;
+    }
+    this.setState({ count: this.state.sections.length + 1, RoundEdit: false });
     console.log(this.state.count);
 
     setTimeout(() => {
@@ -495,7 +537,8 @@ class CreateWorkouts extends Component {
           {
             title: "Round " + this.state.count,
             times: this.state.numberOfRounds,
-            data: []
+            data: [],
+            edit: false
           }
         ]
       });
@@ -578,7 +621,11 @@ class CreateWorkouts extends Component {
             />
             <DeleteModal // pop up to ask for delete
               modalVisible={this.state.deleteModalVisible}
-              edit={false}
+              edit={true}
+              onEditPress={() => {
+                this.setDeleteModalVisible(!this.state.deleteModalVisible),
+                  this.setRoundEditable(this.state.itemTitle);
+              }}
               onDeletePress={() => {
                 console.log("you pressed delete!");
                 this.setDeleteModalVisible(!this.state.deleteModalVisible),
@@ -614,6 +661,7 @@ class CreateWorkouts extends Component {
                 <SectionHeader
                   text={section.title}
                   selected={true}
+                  editing={section.edit}
                   number={section.times}
                   repText={"Times"}
                   onPress={() => {
