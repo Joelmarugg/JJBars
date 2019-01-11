@@ -39,6 +39,7 @@ class Workouts extends Component {
             <ListItem
               text={item.title}
               selected={true}
+              bigText={true}
               number={item.reps}
               repText={item.repText}
               countDown={item.repText === "Secs" ? true : false}

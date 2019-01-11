@@ -11,9 +11,16 @@ const styles = EStyleSheet.create({
   },
   modalText: {
     fontFamily: "$primaryFont",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "300",
-    color: "$primaryWhite"
+    color: "$primaryBlack"
+  },
+  container: {
+    padding: 40,
+    backgroundColor: "$secondaryGreen",
+
+    alignItems: "center",
+    borderRadius: 30
   }
 });
 

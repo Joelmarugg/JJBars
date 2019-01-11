@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Modal, View, Text } from "react-native";
+import { Modal, View, TouchableHighlight } from "react-native";
 
 import styles from "./styles";
 import { RoundButton } from "../Button";
@@ -19,25 +19,27 @@ const DeleteModal = props => {
       animationType="fade"
       transparent={true}
       visible={modalVisible}
-      onRequestClose={() => {
-        console.log("Modal has been closed.");
-      }}
+      onRequestClose={onCancelPress}
     >
-      <View style={styles.modalView}>
-        <View style={{ padding: 10 }}>
-          {edit ? (
-            <RoundButton onPress={onEditPress} buttonText={"Edit"} />
-          ) : null}
-          <View style={{ padding: 20 }} />
-          <RoundButton onPress={onDeletePress} buttonText={"Delete"} />
-          <View style={{ padding: 20 }} />
+      <TouchableHighlight onPress={onCancelPress}>
+        <View style={styles.modalView}>
+          <TouchableHighlight>
+            <View style={styles.container}>
+              {edit ? (
+                <RoundButton onPress={onEditPress} buttonText={"  Edit  "} />
+              ) : null}
+              <View style={{ padding: 20 }} />
+              <RoundButton onPress={onDeletePress} buttonText={"Delete"} />
+              <View style={{ padding: 20 }} />
+              <RoundButton
+                onPress={onCancelPress}
+                cancelButton={true}
+                buttonText={"X"}
+              />
+            </View>
+          </TouchableHighlight>
         </View>
-        <RoundButton
-          onPress={onCancelPress}
-          cancelButton={true}
-          buttonText={"X"}
-        />
-      </View>
+      </TouchableHighlight>
     </Modal>
   );
 };

@@ -25,11 +25,18 @@ const styles = EStyleSheet.create({
     paddingTop: 10,
     color: "$primaryGreen"
   },
+
   text: {
     paddingVertical: 20,
     fontSize: 14,
     color: "$darkText",
     width: "60%"
+  },
+  bigtext: {
+    paddingVertical: 20,
+    fontSize: 18,
+    color: "$darkText",
+    width: "70%"
   },
   separator: {
     marginLeft: 20,

@@ -109,13 +109,20 @@ class CountDown extends Component {
     let ele;
 
     if (this.state.timer === 0) {
-      ele = <Reps repText={"Times Up!"} />;
+      ele = <Reps repText={"Time's Up!"} />;
     } else {
       ele = <Reps number={this.state.timer} repText={"Secs"} />;
     }
 
     return (
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "30%"
+        }}
+      >
         <CountDownButton
           onPress={this.startTimer}
           disabled={this.state.preTimer}
@@ -129,7 +136,7 @@ class CountDown extends Component {
         />
 
         {this.state.preTimer ? (
-          <Text style={styles.text}> {"Gooo in " + this.state.preTime} </Text>
+          <Text style={styles.pretext}>{"Gooo in " + this.state.preTime}</Text>
         ) : (
           ele
         )}

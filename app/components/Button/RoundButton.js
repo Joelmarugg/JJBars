@@ -29,7 +29,13 @@ const RoundButton = props => {
         style={styles.RoundButton}
         onPress={onPress}
       >
-        <Text style={styles.RoundButtonText}>{buttonText}</Text>
+        <Text
+          style={
+            cancelButton ? styles.CancelRoundButtonText : styles.RoundButtonText
+          }
+        >
+          {buttonText}
+        </Text>
       </TouchableHighlight>
     </View>
   );

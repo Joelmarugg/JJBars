@@ -8,6 +8,7 @@ import CountDown from "../Timer/CountDown";
 
 const ListItem = ({
   text,
+  bigText = false,
   musclegroup,
   onPress,
   onLongPress,
@@ -25,7 +26,9 @@ const ListItem = ({
     style={{ borderRadius: 10 }}
   >
     <View style={styles.row}>
-      {selected ? (
+      {bigText ? (
+        <Text style={styles.bigtext}>{text}</Text>
+      ) : selected ? (
         <Text style={styles.text}>{text}</Text>
       ) : (
         <View style={{ flexDirection: "column", paddingVertical: 15 }}>

@@ -115,6 +115,7 @@ class SavedWorkouts extends Component {
           data={this.state.workoutList}
           renderItem={({ item }) => (
             <ListItem
+              bigText={true}
               text={item}
               selected={false}
               onPress={() => this.handlePress(item)}

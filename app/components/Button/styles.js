@@ -9,8 +9,8 @@ const BORDER_RADIUS = 4;
 export default EStyleSheet.create({
   $buttonBackgroundColorBase: "$secondaryGreen",
   $buttonBackgroundColorModifier: 0.1,
-  $cancelbuttonBackgroundColorBase: "#FF6347",
-  $cancelbuttonBackgroundColorModifier: 0.1,
+  $cancelbuttonBackgroundColorBase: "$cancelRed",
+  $cancelbuttonBackgroundColorModifier: 0.2,
 
   container: {
     backgroundColor: "$secondaryGreen",
@@ -28,7 +28,7 @@ export default EStyleSheet.create({
     height: 35,
     borderRadius: 20,
     alignItems: "center",
-    marginHorizontal: 7,
+    marginRight: 0,
     borderColor: "$border",
     borderWidth: StyleSheet.hairlineWidth
   },
@@ -68,13 +68,15 @@ export default EStyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth
   },
   CancelRoundButtonContainer: {
-    backgroundColor: "red",
+    backgroundColor: "$cancelRed",
     height: 40,
+    width: 42,
     borderRadius: 25,
     alignItems: "center",
+    justifyContent: "center",
     marginHorizontal: 30,
 
-    borderColor: "red",
+    borderColor: "$cancelRed",
     borderWidth: StyleSheet.hairlineWidth
   },
   RoundButton: {
@@ -91,6 +93,11 @@ export default EStyleSheet.create({
     fontWeight: "400",
     fontSize: 16,
     color: "$darkText"
+  },
+  CancelRoundButtonText: {
+    fontWeight: "800",
+    fontSize: 16,
+    color: "$primaryWhite"
   },
   RepSecButtonContainer: {
     backgroundColor: "$lightGreen",
