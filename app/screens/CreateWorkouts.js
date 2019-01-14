@@ -279,8 +279,11 @@ class CreateWorkouts extends Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-  setDeleteModalVisible(visible) {
+  setDeleteModalVisible(visible, section) {
     this.setState({ deleteModalVisible: visible });
+    if (section === "section") {
+      this.setState({ isSection: true });
+    }
   }
 
   upDateReps = item => {
@@ -449,7 +452,6 @@ class CreateWorkouts extends Component {
       newSect[number - 1].data = this.state.ownExerciseList;
       this.setState({ section: newSect });
 
-      this.scrollToEnd(true);
       /*console.warn(
         newSect[number - 1].data,
         "aaaaaaaaa",
@@ -621,7 +623,7 @@ class CreateWorkouts extends Component {
             />
             <DeleteModal // pop up to ask for delete
               modalVisible={this.state.deleteModalVisible}
-              edit={true}
+              edit={this.state.isSection}
               onEditPress={() => {
                 this.setDeleteModalVisible(!this.state.deleteModalVisible),
                   this.setRoundEditable(this.state.itemTitle);
@@ -651,6 +653,7 @@ class CreateWorkouts extends Component {
                   }}
                   onLongPress={() => {
                     this.setState({ itemTitle: item });
+                    this.setState({ isSection: false });
                     this.setDeleteModalVisible(true);
                   }}
                   number={item.reps}

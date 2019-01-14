@@ -67,35 +67,52 @@ class CountDown extends Component {
     if (this.state.timer === 0) {
       clearInterval(this.clockCall);
       this.setState({ icon: "-refresh" });
-      this.makeSound("finish");
 
       setTimeout(() => {
-        Vibration.vibrate(500);
-      }, 1000);
-      Vibration.vibrate(500);
+        this.makeSound("finish");
+        Vibration.vibrate(250);
+      }, 500);
+      this.makeSound("finish");
+      Vibration.vibrate(250);
     } else {
       this.setState(prevstate => ({ timer: prevstate.timer - 1 }));
     }
   };
 
   makeSound = async sound => {
-    const soundObject = new Expo.Audio.Sound();
+    /*const soundObject = new Expo.Audio.Sound();
+    soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate);*/
 
     try {
       if (sound === "start") {
+        const soundObject = new Expo.Audio.Sound();
         await soundObject.loadAsync(require("../../../assets/sounds/Beep.mp3"));
-      } else if (sound === "finish") {
-        await soundObject.loadAsync(require("../../../assets/sounds/beer.mp3"));
-      }
+        await soundObject.playAsync();
 
-      await soundObject.playAsync();
-      await setTimeout(() => {
-        soundObject.stopAsync();
-      }, 1000);
+        await setTimeout(() => {
+          soundObject.stopAsync();
+        }, 1000);
+      } else if (sound === "finish") {
+        const soundObject = new Expo.Audio.Sound();
+
+        await soundObject.loadAsync(require("../../../assets/sounds/Beep.mp3"));
+
+        await soundObject.playAsync();
+
+        await setTimeout(() => {
+          soundObject.stopAsync();
+        }, 1000);
+      }
 
       // Your sound is playing!
     } catch (error) {
-      console.log(error);
+      console.warn(error);
+    }
+  };
+
+  _onPlaybackStatusUpdate = playbackStatus => {
+    if (playbackStatus.didJustFinish) {
+      console.warn("sound off");
     }
   };
 
