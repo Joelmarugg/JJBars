@@ -335,10 +335,10 @@ class CreateWorkouts extends Component {
   }
 
   deleteItem = item => {
-    /*if (this.state.RoundEdit) {
-      this.setState({ RoundEdit: false });
-    }*/
     if (this.state.isSection) {
+      if (this.state.RoundEdit) {
+        this.setState({ RoundEdit: false });
+      }
       if (this.state.sections.length === 1) {
         var lastarray = this.state.sections.slice(); // make a separate copy of the array
         lastarray[0].data = [];
