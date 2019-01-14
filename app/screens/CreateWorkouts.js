@@ -335,9 +335,9 @@ class CreateWorkouts extends Component {
   }
 
   deleteItem = item => {
-    if (this.state.RoundEdit) {
+    /*if (this.state.RoundEdit) {
       this.setState({ RoundEdit: false });
-    }
+    }*/
     if (this.state.isSection) {
       if (this.state.sections.length === 1) {
         var lastarray = this.state.sections.slice(); // make a separate copy of the array
@@ -428,6 +428,7 @@ class CreateWorkouts extends Component {
   setRoundEditable = section => {
     //console.warn(section);
     if (this.state.RoundEdit) {
+      console.log("editSection ", this.state.editSection);
       var newSect = this.state.editSection;
       newSect.edit = false;
     }
@@ -451,12 +452,7 @@ class CreateWorkouts extends Component {
       const newSect = this.state.sections.slice();
       newSect[number - 1].data = this.state.ownExerciseList;
       this.setState({ section: newSect });
-
-      /*console.warn(
-        newSect[number - 1].data,
-        "aaaaaaaaa",
-        this.state.ownExerciseList
-      );*/
+      this.scrollToEnd(true, number);
     } else {
       let leng = this.state.sections.length - 1;
       const newSect = this.state.sections.slice();
@@ -468,8 +464,11 @@ class CreateWorkouts extends Component {
     }
   }
 
-  scrollToEnd(animated) {
+  scrollToEnd(animated, sectIndex) {
     var len = this.state.sections.length;
+    if (sectIndex !== undefined) {
+      len = sectIndex;
+    }
     setTimeout(() => {
       this.refs.sectionList.scrollToLocation({
         animated: animated,
@@ -502,6 +501,11 @@ class CreateWorkouts extends Component {
         this.state.workoutTitle + " Already Exists"
       );
     } else {
+      var newSect = this.state.editSection;
+      if (newSect !== null) {
+        newSect.edit = false;
+      }
+
       this.storeWorkout(this.state.workoutTitle);
       console.log("saved this workout: " + this.state.workoutTitle);
       this.props.navigation.popToTop();
