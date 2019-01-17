@@ -1,52 +1,205 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Text, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  TouchableNativeFeedback,
+  Animated,
+  PanResponder,
+  Platform
+} from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
 import Reps from "./Reps";
 import CountDown from "../Timer/CountDown";
 
-const ListItem = ({
-  text,
-  bigText = false,
-  musclegroup,
-  onPress,
-  onLongPress,
-  delayLongPress,
-  selected = false,
-  countDown = false,
-  number,
-  repText,
-  customIcon = null
-}) => (
-  <TouchableHighlight
-    onPress={onPress}
-    onLongPress={onLongPress}
-    delayLongPress={delayLongPress}
-    style={{ borderRadius: 10 }}
-  >
-    <View style={styles.row}>
-      {bigText ? (
-        <Text style={styles.bigtext}>{text}</Text>
-      ) : selected ? (
-        <Text style={styles.text}>{text}</Text>
-      ) : (
-        <View style={{ flexDirection: "column", paddingVertical: 15 }}>
-          <Text style={styles.textUnselected}>{text}</Text>
-          {musclegroup == null ? null : (
-            <Text style={styles.textmusclegroup}>{musclegroup}</Text>
-          )}
-        </View>
-      )}
+const ICON_PREFIX = Platform.OS === "ios" ? "ios" : "md";
+const ICON_COLOR = "#868686";
+const ICON_SIZE = 23;
 
-      {countDown ? <CountDown timer={number} /> : null}
-      {selected && !countDown ? (
-        <Reps number={number} repText={repText} />
-      ) : null}
-      {customIcon}
-    </View>
-  </TouchableHighlight>
-);
+export default class ListItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      pan: new Animated.ValueXY(),
+      scale: new Animated.Value(1)
+    };
+  }
+
+  componentWillMount() {
+    // Add a listener for the delta value change
+    this._val = { x: 0, y: 0 };
+    this.state.pan.addListener(value => (this._val = value));
+
+    // Initialize PanResponder with move handling
+    this.panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: (e, gesture) => true,
+
+      onPanResponderMove: Animated.event([null, { dy: this.state.pan.y }]),
+
+      onPanResponderGrant: (e, gesture) => {
+        Animated.spring(this.state.scale, {
+          toValue: 1.1,
+          friction: 6
+        }).start();
+      },
+
+      onPanResponderRelease: (e, gesture) => {
+        Animated.spring(this.state.scale, { toValue: 1, friction: 6 }).start();
+        if (this.isDropArea() === "smaller") {
+          Animated.spring(this.state.pan, {
+            toValue: { x: 0, y: +50 }
+          }).start(this.props.onDown);
+
+          setTimeout(() => {
+            Animated.spring(this.state.pan, {
+              toValue: { x: 0, y: 0 },
+              friction: 8,
+              tension: 2
+            }).start();
+          }, 300);
+        } else if (this.isDropArea() === "bigger") {
+          Animated.spring(this.state.pan, {
+            toValue: { x: 0, y: -50 }
+          }).start(this.props.onUp);
+
+          setTimeout(() => {
+            Animated.spring(this.state.pan, {
+              toValue: { x: 0, y: 0 },
+              friction: 8,
+              tension: 2
+            }).start();
+          }, 300);
+        } else {
+          Animated.spring(this.state.pan, {
+            toValue: { x: 0, y: 0 },
+            tension: 80
+          }).start();
+        }
+      }
+    });
+  }
+
+  isDropArea() {
+    if (this._val.y > 50) {
+      return "smaller";
+    } else if (this._val.y < -50) {
+      return "bigger";
+    }
+  }
+
+  render() {
+    if (this.props.draggable) {
+      let { pan } = this.state;
+
+      // Calculate the x and y transform from the pan value
+      let [translateX, translateY] = [pan.x, pan.y];
+      let scale = this.state.scale;
+
+      let rotate = "0deg";
+
+      let imageStyle = {
+        transform: [{ translateX }, { translateY }, { rotate }, { scale }]
+      };
+
+      const panStyle = {
+        transform: this.state.pan.getTranslateTransform()
+      };
+
+      return (
+        <Animated.View
+          {...this.panResponder.panHandlers}
+          style={[imageStyle, styles.animView]}
+        >
+          <TouchableNativeFeedback
+            onPress={this.props.onPress}
+            onLongPress={this.props.onLongPress}
+            delayLongPress={this.props.delayLongPress}
+            useForeground={true}
+          >
+            <View style={{ borderRadius: 10, width: "80%" }}>
+              <View style={styles.row}>
+                {this.props.bigText ? (
+                  <Text style={styles.bigtext}>{this.props.text}</Text>
+                ) : this.props.selected ? (
+                  <Text style={styles.text}>{this.props.text}</Text>
+                ) : (
+                  <View
+                    style={{ flexDirection: "column", paddingVertical: 15 }}
+                  >
+                    <Text style={styles.textUnselected}>{text}</Text>
+                    {this.props.musclegroup == null ? null : (
+                      <Text style={styles.textmusclegroup}>
+                        {this.props.musclegroup}
+                      </Text>
+                    )}
+                  </View>
+                )}
+
+                {this.props.countDown ? <CountDown timer={number} /> : null}
+                {this.props.selected && !this.props.countDown ? (
+                  <Reps
+                    number={this.props.number}
+                    repText={this.props.repText}
+                  />
+                ) : null}
+                {this.props.customIcon}
+              </View>
+            </View>
+          </TouchableNativeFeedback>
+          <View style={{ paddingLeft: 10, flexDirection: "column" }}>
+            <Ionicons
+              name={`${ICON_PREFIX}-arrow-dropup`}
+              color={ICON_COLOR}
+              size={ICON_SIZE}
+            />
+            <Ionicons
+              name={`${ICON_PREFIX}-arrow-dropdown`}
+              color={ICON_COLOR}
+              size={ICON_SIZE}
+            />
+          </View>
+        </Animated.View>
+      );
+    } else {
+      return (
+        <TouchableNativeFeedback
+          onPress={this.props.onPress}
+          onLongPress={this.props.onLongPress}
+          delayLongPress={this.props.delayLongPress}
+          style={{ borderRadius: 10 }}
+        >
+          <View style={styles.row}>
+            {this.props.bigText ? (
+              <Text style={styles.bigtext}>{this.props.text}</Text>
+            ) : this.props.selected ? (
+              <Text style={styles.text}>{this.props.text}</Text>
+            ) : (
+              <View style={{ flexDirection: "column", paddingVertical: 15 }}>
+                <Text style={styles.textUnselected}>{this.props.text}</Text>
+                {this.props.musclegroup == null ? null : (
+                  <Text style={styles.textmusclegroup}>
+                    {this.props.musclegroup}
+                  </Text>
+                )}
+              </View>
+            )}
+
+            {this.props.countDown ? (
+              <CountDown timer={this.props.number} />
+            ) : null}
+            {this.props.selected && !this.props.countDown ? (
+              <Reps number={this.props.number} repText={this.props.repText} />
+            ) : null}
+            {this.props.customIcon}
+          </View>
+        </TouchableNativeFeedback>
+      );
+    }
+  }
+}
 
 ListItem.propTypes = {
   text: PropTypes.string,
@@ -55,5 +208,3 @@ ListItem.propTypes = {
   number: PropTypes.number,
   customIcon: PropTypes.element
 };
-
-export default ListItem;

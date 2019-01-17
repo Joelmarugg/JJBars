@@ -17,9 +17,7 @@ const styles = EStyleSheet.create({
     borderRadius: BORDER_RADIUS,
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 11,
-    borderColor: "$border",
-    borderWidth: StyleSheet.hairlineWidth
+    marginVertical: 11
   },
   buttonContainer: {
     height: INPUT_HEIGHT,
@@ -27,7 +25,9 @@ const styles = EStyleSheet.create({
     justifyContent: "center",
     backgroundColor: "$lightGreen",
     borderTopRightRadius: BORDER_RADIUS,
-    borderBottomRightRadius: BORDER_RADIUS
+    borderBottomRightRadius: BORDER_RADIUS,
+    borderWidth: StyleSheet.hairlineWidth * 2,
+    borderColor: "$border"
   },
   buttonText: {
     fontFamily: "$primaryFont",
@@ -41,12 +41,16 @@ const styles = EStyleSheet.create({
     flex: 1,
     fontSize: 18,
     paddingHorizontal: 8,
-    color: "$inputText"
+    color: "$inputText",
+    borderTopLeftRadius: BORDER_RADIUS,
+    borderBottomLeftRadius: BORDER_RADIUS,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "$border"
   },
   border: {
-    height: INPUT_HEIGHT,
-    width: StyleSheet.hairlineWidth,
-    backgroundColor: "$border"
+    height: INPUT_HEIGHT
+    //width: StyleSheet.hairlineWidth
+    //backgroundColor: "$border"
   },
 
   inputBarContainer: {
@@ -72,7 +76,8 @@ const styles = EStyleSheet.create({
     alignItems: "center",
     marginVertical: 25,
     borderColor: "$border",
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 5
   },
   numberInput: {
     height: INPUT_HEIGHT,

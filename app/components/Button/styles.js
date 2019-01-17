@@ -20,7 +20,8 @@ export default EStyleSheet.create({
     alignItems: "center",
     marginVertical: 11,
     borderColor: "$border",
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 3
   },
   CDcontainer: {
     backgroundColor: "$secondaryGreen",
@@ -30,7 +31,8 @@ export default EStyleSheet.create({
     alignItems: "center",
     marginRight: 0,
     borderColor: "$border",
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 3
   },
 
   button: {
@@ -63,7 +65,7 @@ export default EStyleSheet.create({
     borderRadius: 25,
     alignItems: "center",
     marginHorizontal: 30,
-
+    elevation: 3,
     borderColor: "$border",
     borderWidth: StyleSheet.hairlineWidth
   },
@@ -75,7 +77,7 @@ export default EStyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30,
-
+    elevation: 5,
     borderColor: "$cancelRedBorder",
     borderWidth: StyleSheet.hairlineWidth
   },
@@ -106,7 +108,8 @@ export default EStyleSheet.create({
     marginLeft: 10,
     alignItems: "center",
     borderColor: "$border",
-    borderWidth: StyleSheet.hairlineWidth
+    borderWidth: StyleSheet.hairlineWidth,
+    elevation: 5
   },
   RepSecButton: {
     height: 40,

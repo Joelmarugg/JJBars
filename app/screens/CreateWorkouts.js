@@ -57,6 +57,7 @@ class CreateWorkouts extends Component {
       edit: false,
       RoundEdit: false,
       editSection: null,
+      draggable: false,
       isSection: false,
       sections: [
         {
@@ -426,20 +427,30 @@ class CreateWorkouts extends Component {
   };
 
   setRoundEditable = section => {
-    //console.warn(section);
-    if (this.state.RoundEdit) {
-      console.log("editSection ", this.state.editSection);
-      var newSect = this.state.editSection;
-      newSect.edit = false;
+    if (this.state.isSection) {
+      //console.warn(section);
+      if (this.state.RoundEdit) {
+        console.log("editSection ", this.state.editSection);
+        var newSect = this.state.editSection;
+        newSect.edit = false;
+      }
+
+      section.edit = true;
+
+      this.setState({
+        RoundEdit: true,
+        editSection: section,
+        ownExerciseList: section.data
+      });
     }
+  };
 
-    section.edit = true;
-
-    this.setState({
-      RoundEdit: true,
-      editSection: section,
-      ownExerciseList: section.data
-    });
+  setItemsEditable = () => {
+    if (!this.state.isSection && !this.state.draggable) {
+      this.setState({ draggable: true });
+    } else if (!this.state.isSection && this.state.draggable) {
+      this.setState({ draggable: false });
+    }
   };
 
   //update the section
@@ -554,6 +565,50 @@ class CreateWorkouts extends Component {
     }, 5);
   };
 
+  //////ANIMATION//////////////////////////////////////////////////////////////////////////////////////////
+  goDown = item => {
+    for (let i = 0; i < this.state.sections.length; i++) {
+      for (let y = 0; y < this.state.sections[i].data.length; y++) {
+        if (item === this.state.sections[i].data[y]) {
+          var array = this.state.sections.slice(); // make a separate copy of the array
+          var innerArray = array[i].data.slice();
+          var index = innerArray.indexOf(item);
+
+          innerArray.splice(index, 1);
+          innerArray.splice(index + 1, 0, item);
+
+          array[i].data = innerArray;
+
+          this.setState({ sections: array, ownExerciseList: innerArray });
+          break;
+        }
+      }
+    }
+  };
+
+  goUp = item => {
+    for (let i = 0; i < this.state.sections.length; i++) {
+      for (let y = 0; y < this.state.sections[i].data.length; y++) {
+        if (item === this.state.sections[i].data[y]) {
+          var array = this.state.sections.slice(); // make a separate copy of the array
+          var innerArray = array[i].data.slice();
+          var index = innerArray.indexOf(item);
+          console.warn("index-1: ", index - 1);
+          if (index - 1 < 0) {
+          } else {
+            innerArray.splice(index, 1);
+            innerArray.splice(index - 1, 0, item);
+
+            array[i].data = innerArray;
+
+            this.setState({ sections: array, ownExerciseList: innerArray });
+          }
+          break;
+        }
+      }
+    }
+  };
+
   render() {
     return (
       <CWContainer>
@@ -627,10 +682,11 @@ class CreateWorkouts extends Component {
             />
             <DeleteModal // pop up to ask for delete
               modalVisible={this.state.deleteModalVisible}
-              edit={this.state.isSection}
+              edit={true} //this.state.isSection
               onEditPress={() => {
                 this.setDeleteModalVisible(!this.state.deleteModalVisible),
                   this.setRoundEditable(this.state.itemTitle);
+                this.setItemsEditable();
               }}
               onDeletePress={() => {
                 console.log("you pressed delete!");
@@ -649,6 +705,15 @@ class CreateWorkouts extends Component {
                 <ListItem
                   text={item.title}
                   selected={true}
+                  draggable={this.state.draggable}
+                  onDown={() => {
+                    console.warn("onDown called");
+                    this.goDown(item);
+                  }}
+                  onUp={() => {
+                    console.warn("onUp called");
+                    this.goUp(item);
+                  }}
                   onPress={() => {
                     this.setState({ leftList: false });
                     this.setState({ repText: "Reps" });

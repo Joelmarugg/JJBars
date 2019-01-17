@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import EStyleSheet from "react-native-extended-stylesheet";
+import EStyleSheet, { absoluteFill } from "react-native-extended-stylesheet";
 
 const styles = EStyleSheet.create({
   $iconColor: "$secondaryGreen",
@@ -113,6 +113,16 @@ const styles = EStyleSheet.create({
   loadingIconText: {
     fontSize: 12,
     fontFamily: "$primaryFont"
+  },
+  animView: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+
+    alignItems: "center",
+    borderRadius: 10,
+    backgroundColor: "skyblue",
+    zIndex: 999,
+    elevation: 999
   }
 });
 
