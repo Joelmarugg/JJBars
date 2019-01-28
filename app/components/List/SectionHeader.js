@@ -103,9 +103,9 @@ export default class SectionHeader extends React.Component {
         transform: [{ translateX }, { translateY }, { rotate }, { scale }]
       };
 
-      const panStyle = {
-        transform: this.state.pan.getTranslateTransform()
-      };
+      //const panStyle = {
+      //  transform: this.state.pan.getTranslateTransform()
+      //};
 
       return (
         <Animated.View

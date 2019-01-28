@@ -642,7 +642,6 @@ class CreateWorkouts extends Component {
         var array = this.state.sections.slice(); // make a separate copy of the array
         var index = array.indexOf(section);
         if (index + 1 >= this.state.sections.length) {
-          console.warn("not going there!");
         } else {
           array[index].title = "Round " + (index + 2);
           array[index + 1].title = "Round " + (index + 1);
