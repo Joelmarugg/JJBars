@@ -252,7 +252,9 @@ class CreateWorkouts extends Component {
           "OR category.muscle_group LIKE" +
           '"%' +
           query +
-          '%"',
+          '%"' +
+          " GROUP BY exercises.exercise_name;",
+
         [],
         (_, { rows }) => this.setState({ exerciseList: rows._array }),
         console.log("list filtered")
@@ -269,7 +271,8 @@ class CreateWorkouts extends Component {
           "OR category.muscle_group LIKE" +
           '"%' +
           query +
-          '%"',
+          '%"' +
+          " GROUP BY exercises.exercise_name;",
         [],
         (_, { rows }) => console.log("Show the LIST: " + JSON.stringify(rows))
       );
@@ -574,12 +577,16 @@ class CreateWorkouts extends Component {
           var innerArray = array[i].data.slice();
           var index = innerArray.indexOf(item);
 
-          innerArray.splice(index, 1);
-          innerArray.splice(index + 1, 0, item);
+          if (index + 1 >= this.state.sections[i].data.length) {
+            console.warn("not going there!");
+          } else {
+            innerArray.splice(index, 1);
+            innerArray.splice(index + 1, 0, item);
 
-          array[i].data = innerArray;
+            array[i].data = innerArray;
 
-          this.setState({ sections: array, ownExerciseList: innerArray });
+            this.setState({ sections: array, ownExerciseList: innerArray });
+          }
           break;
         }
       }
@@ -593,8 +600,9 @@ class CreateWorkouts extends Component {
           var array = this.state.sections.slice(); // make a separate copy of the array
           var innerArray = array[i].data.slice();
           var index = innerArray.indexOf(item);
-          console.warn("index-1: ", index - 1);
+
           if (index - 1 < 0) {
+            console.warn("not going there!");
           } else {
             innerArray.splice(index, 1);
             innerArray.splice(index - 1, 0, item);
@@ -605,6 +613,45 @@ class CreateWorkouts extends Component {
           }
           break;
         }
+      }
+    }
+  };
+
+  goUpHeader = section => {
+    for (let i = 0; i < this.state.sections.length; i++) {
+      if (section === this.state.sections[i]) {
+        var array = this.state.sections.slice(); // make a separate copy of the array
+        var index = array.indexOf(section);
+        if (index - 1 < 0) {
+          console.warn("not going there!");
+        } else {
+          array[index].title = "Round " + index;
+          array[index - 1].title = "Round " + (index + 1);
+          array.splice(index, 1);
+          array.splice(index - 1, 0, section);
+
+          this.setState({ sections: array });
+        }
+        break;
+      }
+    }
+  };
+  goDownHeader = section => {
+    for (let i = 0; i < this.state.sections.length; i++) {
+      if (section === this.state.sections[i]) {
+        var array = this.state.sections.slice(); // make a separate copy of the array
+        var index = array.indexOf(section);
+        if (index + 1 >= this.state.sections.length) {
+          console.warn("not going there!");
+        } else {
+          array[index].title = "Round " + (index + 2);
+          array[index + 1].title = "Round " + (index + 1);
+          array.splice(index, 1);
+          array.splice(index + 1, 0, section);
+
+          this.setState({ sections: array });
+        }
+        break;
       }
     }
   };
@@ -707,11 +754,9 @@ class CreateWorkouts extends Component {
                   selected={true}
                   draggable={this.state.draggable}
                   onDown={() => {
-                    console.warn("onDown called");
                     this.goDown(item);
                   }}
                   onUp={() => {
-                    console.warn("onUp called");
                     this.goUp(item);
                   }}
                   onPress={() => {
@@ -736,6 +781,13 @@ class CreateWorkouts extends Component {
                   editing={section.edit}
                   number={section.times}
                   repText={"Times"}
+                  draggable={this.state.draggable}
+                  onDown={() => {
+                    this.goDownHeader(section);
+                  }}
+                  onUp={() => {
+                    this.goUpHeader(section);
+                  }}
                   onPress={() => {
                     this.setState({ leftList: false });
                     this.setState({ repText: "Times" });
