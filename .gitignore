@@ -2,4 +2,6 @@ node_modules/**/*
 .expo/*
 npm-debug.*
 
-app/config/ApiKeys.js
+app/config/ApiKey.js
+config/ApiKey.js
+ApiKey.js

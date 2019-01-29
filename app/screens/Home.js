@@ -8,7 +8,7 @@ import { Container } from "../components/Container";
 import { Logo } from "../components/Logo";
 import { Button } from "../components/Button";
 import { connectAlert } from "../components/Alert";
-import ApiKeys from "../config/ApiKeys";
+import ApiKey from "../config/ApiKey";
 
 class Home extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Home extends Component {
     };
     //Initialize firebase
     if (!firebase.apps.length) {
-      firebase.initializeApp(ApiKeys.FirebaseConfig);
+      firebase.initializeApp(ApiKey.FirebaseConfig);
     }
   }
 
