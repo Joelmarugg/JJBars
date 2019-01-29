@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, SectionList, StatusBar, AsyncStorage } from "react-native";
+import * as firebase from "firebase";
 
 import {
   ListItem,
@@ -21,12 +22,30 @@ class Workouts extends Component {
   }
 
   //insert the exercises of the workout
-  updateList = () => {
-    const workoutName = this.props.navigation.getParam("title");
-    AsyncStorage.getItem(workoutName, (err, section) => {
-      this.setState({ sections: JSON.parse(section) });
-    });
-  };
+  //gets the workouts only from firebase when not existing on phone.
+  async updateList() {
+    try {
+      const workoutName = this.props.navigation.getParam("title");
+      await AsyncStorage.getItem(workoutName, (err, section) => {
+        if (section !== null) {
+          this.setState({ sections: JSON.parse(section) });
+        } else {
+          firebase
+            .database()
+            .ref("workouts")
+            .on("value", snap => {
+              snap.forEach(child => {
+                if (child.val().workoutname === workoutName) {
+                  this.setState({ sections: child.val().sections });
+                }
+              });
+            });
+        }
+      });
+    } catch (err) {
+      console.warn("uuups ", err);
+    }
+  }
 
   render() {
     return (

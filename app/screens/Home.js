@@ -2,13 +2,26 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Text, View, StatusBar, TouchableOpacity } from "react-native";
 import { Constants, FileSystem, Asset, SQLite } from "expo";
+import * as firebase from "firebase";
 
 import { Container } from "../components/Container";
 import { Logo } from "../components/Logo";
 import { Button } from "../components/Button";
 import { connectAlert } from "../components/Alert";
+import ApiKeys from "../config/ApiKeys";
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoadingComplete: false //not used!!
+    };
+    //Initialize firebase
+    if (!firebase.apps.length) {
+      firebase.initializeApp(ApiKeys.FirebaseConfig);
+    }
+  }
+
   static propTypes = {
     navigation: PropTypes.object,
     alertWithType: PropTypes.func
@@ -21,7 +34,9 @@ class Home extends Component {
   };
 
   handlePressGenerateButton = () => {
-    console.log("press generate button");
+    this.props.navigation.navigate("OnlineWorkouts", {
+      title: "Online Workouts"
+    });
   };
 
   handlePressSavedButton = () => {
@@ -98,7 +113,7 @@ class Home extends Component {
             onPress={this.handlePressCreateButton}
           />
           <Button
-            buttonText={"Generate Workout"}
+            buttonText={"Online Workouts"}
             onPress={this.handlePressGenerateButton}
           />
           <Button

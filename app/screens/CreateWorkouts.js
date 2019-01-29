@@ -729,6 +729,7 @@ class CreateWorkouts extends Component {
             <DeleteModal // pop up to ask for delete
               modalVisible={this.state.deleteModalVisible}
               edit={true} //this.state.isSection
+              isdelete={true}
               onEditPress={() => {
                 this.setDeleteModalVisible(!this.state.deleteModalVisible),
                   this.setRoundEditable(this.state.itemTitle);

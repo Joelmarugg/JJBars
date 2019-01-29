@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation";
 import Home from "../screens/Home";
 import CreateWorkouts from "../screens/CreateWorkouts";
 import SavedWorkouts from "../screens/SavedWorkouts";
+import OnlineWorkouts from "../screens/OnlineWorkouts";
 import Workouts from "../screens/Workouts";
 
 export default createStackNavigator(
@@ -22,6 +23,12 @@ export default createStackNavigator(
     },
     SavedWorkouts: {
       screen: SavedWorkouts,
+      navigationOptions: ({ navigation }) => ({
+        headerTitle: navigation.state.params.title
+      })
+    },
+    OnlineWorkouts: {
+      screen: OnlineWorkouts,
       navigationOptions: ({ navigation }) => ({
         headerTitle: navigation.state.params.title
       })

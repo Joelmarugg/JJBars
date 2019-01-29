@@ -10,6 +10,11 @@ const DeleteModal = props => {
     onEditPress,
     edit,
     onDeletePress,
+    isdelete,
+    onDownloadPress,
+    download,
+    onUploadPress,
+    upload,
     onCancelPress,
     modalVisible
   } = props;
@@ -25,13 +30,29 @@ const DeleteModal = props => {
         <View style={styles.modalView}>
           <TouchableHighlight>
             <View style={styles.container}>
-              {edit ? (
+              {upload ? (
                 <View style={{ paddingBottom: 20 }}>
-                  <RoundButton onPress={onEditPress} buttonText={"  Edit  "} />
+                  <RoundButton onPress={onUploadPress} buttonText={"Upload"} />
                 </View>
               ) : null}
+              {edit ? (
+                <View style={{ paddingBottom: 20 }}>
+                  <RoundButton
+                    onPress={onEditPress}
+                    buttonText={"   Edit   "}
+                  />
+                </View>
+              ) : null}
+              {download ? (
+                <RoundButton
+                  onPress={onDownloadPress}
+                  buttonText={"Download"}
+                />
+              ) : null}
 
-              <RoundButton onPress={onDeletePress} buttonText={"Delete"} />
+              {isdelete ? (
+                <RoundButton onPress={onDeletePress} buttonText={" Delete "} />
+              ) : null}
               <View style={{ padding: 20 }} />
               <RoundButton
                 onPress={onCancelPress}
