@@ -6,5 +6,8 @@ export default {
     projectId: "jjbars",
     storageBucket: "jjbars.appspot.com",
     messagingSenderId: "294858006035"
+  },
+  something: {
+    goo: "guuu"
   }
 };
