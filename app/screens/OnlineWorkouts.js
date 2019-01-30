@@ -54,7 +54,7 @@ class OnlineWorkouts extends Component {
     this.getAllWorkouts(this.itemsRef);
   }
 
-  //get the workout names from async (keys)
+  //get the workout names from firebase
   getAllWorkouts(itemsRef) {
     itemsRef.on("value", snap => {
       var items = [];

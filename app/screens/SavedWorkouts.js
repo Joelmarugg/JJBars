@@ -27,6 +27,7 @@ var replacementText = "No Workouts Saved Yet!";
 class SavedWorkouts extends Component {
   constructor(props) {
     super(props);
+    this.itemsRef = firebase.database().ref("workouts");
     this.state = {
       workoutList: [],
       modalVisible: false,
@@ -34,7 +35,8 @@ class SavedWorkouts extends Component {
       delete: false,
       workout: "",
       sections: [],
-      key: null
+      key: null,
+      onlineWorkouts: []
     };
   }
 
@@ -51,7 +53,20 @@ class SavedWorkouts extends Component {
 
   componentDidMount() {
     this.getAllWorkouts();
+    this.getAllOnlineWorkouts(this.itemsRef);
   }
+
+  //get the workout names from firebase
+  getAllOnlineWorkouts(itemsRef) {
+    itemsRef.on("value", snap => {
+      var items = [];
+      snap.forEach(child => {
+        items.push(child);
+      });
+      this.setState({ onlineWorkouts: items });
+    });
+  }
+
   //get the workout names from async (keys)
   getAllWorkouts = () => {
     AsyncStorage.getAllKeys((err, workouts) => {
@@ -88,21 +103,24 @@ class SavedWorkouts extends Component {
       title: woTitle
     });
   };
-  uploadItem = async () => {
-    let ups = false;
-    await firebase
-      .database()
-      .ref("workouts")
-      .on("value", snap => {
-        snap.forEach(child => {
-          if (child.val().workoutname === this.state.workout) {
-            ups = true;
-            this.setState({ key: child.key });
-          }
-        });
-      });
 
-    if (ups) {
+  checkFirebase = () => {
+    let ups = false;
+    for (i = 0; i < this.state.onlineWorkouts.length; i++) {
+      console.log("online is: ", this.state.onlineWorkouts[i].val());
+      if (
+        this.state.onlineWorkouts[i].val().workoutname === this.state.workout
+      ) {
+        ups = true;
+        this.setState({ key: this.state.onlineWorkouts[i].key });
+      }
+    }
+
+    return ups;
+  };
+
+  uploadItem = async () => {
+    if (this.checkFirebase()) {
       this.setYesNoModalVisible(true);
     } else {
       await AsyncStorage.getItem(this.state.workout, (err, section) => {
