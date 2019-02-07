@@ -173,7 +173,20 @@ export default class ListItem extends React.Component {
         >
           <View style={styles.row}>
             {this.props.bigText ? (
-              <Text style={styles.bigtext}>{this.props.text}</Text>
+              <View>
+                {this.props.online ? (
+                  <View style={{ flexDirection: "column" }}>
+                    <Text style={styles.bigtextWithInfo}>
+                      {this.props.text}
+                    </Text>
+                    <Text style={styles.info}>
+                      Uploaded by: {this.props.userName} on {this.props.date}
+                    </Text>
+                  </View>
+                ) : (
+                  <Text style={styles.bigtext}>{this.props.text}</Text>
+                )}
+              </View>
             ) : this.props.selected ? (
               <Text style={styles.text}>{this.props.text}</Text>
             ) : (

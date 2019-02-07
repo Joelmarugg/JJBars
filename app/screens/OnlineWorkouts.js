@@ -35,6 +35,7 @@ class OnlineWorkouts extends Component {
       downloaded: false,
       workout: "",
       sections: null,
+      userName: "",
       workoutTitleList: ""
     };
   }
@@ -55,13 +56,22 @@ class OnlineWorkouts extends Component {
   }
 
   //get the workout names from firebase
+
   getAllWorkouts(itemsRef) {
     itemsRef.on("value", snap => {
       var items = [];
       snap.forEach(child => {
-        items.push(child.val().workoutname);
+        items.push({
+          workoutname: child.val().workoutname,
+          user: child.val().user
+        });
       });
-      this.setState({ workoutList: items });
+
+      var names = [];
+      for (let i = 0; i < items.length; i++) {
+        names.push(items[i].workoutname);
+      }
+      this.setState({ workoutList: items, workoutNameList: names });
     });
   }
 
@@ -102,7 +112,9 @@ class OnlineWorkouts extends Component {
         .on("value", snap => {
           snap.forEach(child => {
             if (child.val().workoutname === this.state.workout) {
-              this.setState({ sections: child.val().sections });
+              this.setState({
+                sections: child.val().sections
+              });
             }
           });
         });
@@ -155,11 +167,15 @@ class OnlineWorkouts extends Component {
           renderItem={({ item }) => (
             <ListItem
               bigText={true}
-              text={item}
+              text={item.workoutname}
+              userName={item.user}
+              date={"16.08.1993"}
+              online={true}
               selected={false}
-              onPress={() => this.handlePress(item)}
+              onPress={() => this.handlePress(item.workoutname)}
               onLongPress={() => {
-                this.handleLongPress(), this.setState({ workout: item });
+                this.handleLongPress(),
+                  this.setState({ workout: item.workoutname });
               }}
               delayLongPress={500}
               customIcon={

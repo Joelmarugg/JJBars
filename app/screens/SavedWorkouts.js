@@ -22,6 +22,8 @@ const ICON_SIZE = 23;
 
 const HEADER = Platform.OS === "ios" ? IosHomeHeader : HomeHeader;
 
+const USERNAME = AsyncStorage.getItem("userName");
+
 var replacementText = "No Workouts Saved Yet!";
 
 class SavedWorkouts extends Component {
@@ -136,6 +138,7 @@ class SavedWorkouts extends Component {
         .database()
         .ref("workouts")
         .push({
+          user: USERNAME._55,
           workoutname: this.state.workout,
           sections: this.state.sections
         });
@@ -159,9 +162,15 @@ class SavedWorkouts extends Component {
       .ref("workouts")
       .child(this.state.key)
       .update({
+        user: USERNAME._55,
         workoutname: this.state.workout,
         sections: this.state.sections
       });
+    this.props.alertWithType(
+      "success",
+      "Workout Updated",
+      "You Updated: " + this.state.workout
+    );
   };
 
   handleLongPress = () => {
