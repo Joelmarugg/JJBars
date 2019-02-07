@@ -664,6 +664,7 @@ class CreateWorkouts extends Component {
             buttonText={"Save Workout"}
             value={this.state.edit ? this.state.workoutTitle : null}
             editable={this.state.edit ? false : true}
+            placeholder={"Workout Name"}
             onPress={this.handlePressSaveButton}
             onChangeText={text => this.handleTextChange(text)}
             clearTextOnFocus={true}

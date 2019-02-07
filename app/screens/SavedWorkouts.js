@@ -70,6 +70,11 @@ class SavedWorkouts extends Component {
   //get the workout names from async (keys)
   getAllWorkouts = () => {
     AsyncStorage.getAllKeys((err, workouts) => {
+      for (let i = 0; i < workouts.length; i++) {
+        if (workouts[i] === "userName") {
+          workouts.splice(i, 1);
+        }
+      }
       this.setState({ workoutList: workouts }),
         console.log("stored workouts: " + this.state.workoutList);
     });

@@ -9,7 +9,7 @@ const InputWithButton = props => {
   const {
     onPress,
     buttonText,
-
+    placeholder,
     value,
     editable,
     onChangeText,
@@ -24,7 +24,7 @@ const InputWithButton = props => {
       <TextInput
         style={styles.input}
         value={value}
-        placeholder={"Workout Name"}
+        placeholder={placeholder}
         underlineColorAndroid="transparent"
         onChangeText={onChangeText}
         clearTextOnFocus={clear}

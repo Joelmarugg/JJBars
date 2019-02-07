@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Text, View, StatusBar, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  StatusBar,
+  TouchableOpacity,
+  AsyncStorage
+} from "react-native";
 import { Constants, FileSystem, Asset, SQLite } from "expo";
 import * as firebase from "firebase";
-
+import { InputWithButton } from "../components/TextInput";
 import { Container } from "../components/Container";
 import { Logo } from "../components/Logo";
 import { Button } from "../components/Button";
@@ -14,12 +20,18 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoadingComplete: false //not used!!
+      isLoadingComplete: false, //not used!!
+      userName: null,
+      hasUserName: false
     };
     //Initialize firebase
     if (!firebase.apps.length) {
       firebase.initializeApp(ApiKey.FirebaseConfig);
     }
+  }
+
+  componentDidMount() {
+    this.getUserName();
   }
 
   static propTypes = {
@@ -95,44 +107,123 @@ class Home extends Component {
     console.log("loading db");
   };
 
-  render() {
-    return (
-      <Container>
-        <View
-          style={{
-            flex: 1,
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center"
-          }}
-        >
-          <StatusBar translucent={false} barStyle="light-content" />
-          <Logo />
-          <Button
-            buttonText={"Create Workout"}
-            onPress={this.handlePressCreateButton}
-          />
-          <Button
-            buttonText={"Online Workouts"}
-            onPress={this.handlePressGenerateButton}
-          />
-          <Button
-            buttonText={"Saved Workouts"}
-            onPress={this.handlePressSavedButton}
-          />
-        </View>
+  storeUserName = async userName => {
+    try {
+      await AsyncStorage.setItem("userName", userName);
+      this.setState({ hasUserName: true });
+    } catch (error) {
+      // Error saving data
+    }
+  };
 
-        <TouchableOpacity
-          style={{
-            padding: 10,
-            alignItems: "center"
-          }}
-          onPress={this.loadDB}
-        >
-          <Text>Download DB!</Text>
-        </TouchableOpacity>
-      </Container>
+  getUserName = async () => {
+    try {
+      await AsyncStorage.getItem("userName", (err, userName) => {
+        this.setState({ userName: userName });
+        console.warn("the user name: ", this.state.userName);
+        if (userName !== null) {
+          this.setState({ hasUserName: true });
+        }
+      });
+    } catch (error) {
+      console.warn("fuckit", error);
+    }
+  };
+  handleTextChange = text => {
+    this.setState({ userName: text });
+  };
+  removeUserName = () => {
+    AsyncStorage.removeItem("userName");
+    this.props.alertWithType(
+      "warn",
+      "Attention",
+      "You deleted your Username!!"
     );
+  };
+  handleSaveButton = () => {
+    this.storeUserName(this.state.userName);
+  };
+
+  render() {
+    if (this.state.hasUserName) {
+      return (
+        <Container>
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <StatusBar translucent={false} barStyle="light-content" />
+
+            <Text>Welcome Back {this.state.userName}!</Text>
+
+            <Logo />
+
+            <Button
+              buttonText={"Create Workout"}
+              onPress={this.handlePressCreateButton}
+            />
+            <Button
+              buttonText={"Online Workouts"}
+              onPress={this.handlePressGenerateButton}
+            />
+            <Button
+              buttonText={"Saved Workouts"}
+              onPress={this.handlePressSavedButton}
+            />
+          </View>
+
+          <TouchableOpacity
+            style={{
+              padding: 10,
+              alignItems: "center"
+            }}
+            onPress={this.loadDB}
+            onLongPress={this.removeUserName}
+          >
+            <Text>Download DB!</Text>
+          </TouchableOpacity>
+        </Container>
+      );
+    } else {
+      return (
+        <Container>
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <StatusBar translucent={false} barStyle="light-content" />
+            <InputWithButton
+              buttonText={"Save Name"}
+              value={null}
+              placeholder={"Enter Your Username.."}
+              editable={true}
+              onPress={this.handleSaveButton}
+              onChangeText={text => this.handleTextChange(text)}
+              clearTextOnFocus={true}
+            />
+            <Logo />
+          </View>
+
+          <TouchableOpacity
+            style={{
+              padding: 10,
+              alignItems: "center"
+            }}
+            onPress={this.loadDB}
+          >
+            <Text>Download DB!</Text>
+          </TouchableOpacity>
+        </Container>
+      );
+    }
   }
 }
 
