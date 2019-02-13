@@ -4,6 +4,7 @@ import {
   Text,
   View,
   StatusBar,
+  Platform,
   TouchableOpacity,
   AsyncStorage
 } from "react-native";
@@ -15,6 +16,8 @@ import { Logo } from "../components/Logo";
 import { Button } from "../components/Button";
 import { connectAlert } from "../components/Alert";
 import ApiKey from "../config/ApiKey";
+
+const STATUSBAR_HEIGHT = Platform.OS === "ios" ? 20 : StatusBar.currentHeight;
 
 class Home extends Component {
   constructor(props) {
@@ -158,7 +161,9 @@ class Home extends Component {
           >
             <StatusBar translucent={false} barStyle="light-content" />
 
-            <Text>Welcome Back {this.state.userName}!</Text>
+            <Text style={{ paddingTop: STATUSBAR_HEIGHT }}>
+              Welcome Back {this.state.userName}!
+            </Text>
 
             <Logo />
 
@@ -166,6 +171,7 @@ class Home extends Component {
               buttonText={"Create Workout"}
               onPress={this.handlePressCreateButton}
             />
+
             <Button
               buttonText={"Online Workouts"}
               onPress={this.handlePressGenerateButton}
