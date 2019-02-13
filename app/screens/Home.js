@@ -153,33 +153,49 @@ class Home extends Component {
         <Container>
           <View
             style={{
+              flexDirection: "row",
+              alignItems: "flex-start",
+              justifyContent: "flex-start",
+              marginTop: STATUSBAR_HEIGHT
+            }}
+          >
+            <Text style={{ padding: 10 }}>
+              Welcome Back {this.state.userName}!
+            </Text>
+          </View>
+          <View
+            style={{
               flex: 1,
-              width: "100%",
-              alignItems: "center",
-              justifyContent: "center"
+
+              width: "100%"
             }}
           >
             <StatusBar translucent={false} barStyle="light-content" />
 
-            <Text style={{ paddingTop: STATUSBAR_HEIGHT }}>
-              Welcome Back {this.state.userName}!
-            </Text>
-
             <Logo />
+            <View
+              style={{
+                flex: 1,
 
-            <Button
-              buttonText={"Create Workout"}
-              onPress={this.handlePressCreateButton}
-            />
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <Button
+                buttonText={"Create Workout"}
+                onPress={this.handlePressCreateButton}
+              />
 
-            <Button
-              buttonText={"Online Workouts"}
-              onPress={this.handlePressGenerateButton}
-            />
-            <Button
-              buttonText={"Saved Workouts"}
-              onPress={this.handlePressSavedButton}
-            />
+              <Button
+                buttonText={"Online Workouts"}
+                onPress={this.handlePressGenerateButton}
+              />
+              <Button
+                buttonText={"Saved Workouts"}
+                onPress={this.handlePressSavedButton}
+              />
+            </View>
           </View>
 
           <TouchableOpacity

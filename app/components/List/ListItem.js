@@ -4,6 +4,7 @@ import {
   View,
   Text,
   TouchableNativeFeedback,
+  TouchableHighlight,
   Animated,
   PanResponder,
   Platform
@@ -15,6 +16,8 @@ import Reps from "./Reps";
 import CountDown from "../Timer/CountDown";
 
 const ICON_PREFIX = Platform.OS === "ios" ? "ios" : "md";
+const TOUCH_ITEM =
+  Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
 const ICON_COLOR = "#868686";
 const ICON_SIZE = 23;
 
@@ -113,7 +116,7 @@ export default class ListItem extends React.Component {
           {...this.panResponder.panHandlers}
           style={[imageStyle, styles.animView]}
         >
-          <TouchableNativeFeedback
+          <TOUCH_ITEM
             onPress={this.props.onPress}
             onLongPress={this.props.onLongPress}
             delayLongPress={this.props.delayLongPress}
@@ -148,7 +151,7 @@ export default class ListItem extends React.Component {
                 {this.props.customIcon}
               </View>
             </View>
-          </TouchableNativeFeedback>
+          </TOUCH_ITEM>
           <View style={{ paddingLeft: 10, flexDirection: "column" }}>
             <Ionicons
               name={`${ICON_PREFIX}-arrow-dropup`}
@@ -165,7 +168,7 @@ export default class ListItem extends React.Component {
       );
     } else {
       return (
-        <TouchableNativeFeedback
+        <TOUCH_ITEM
           onPress={this.props.onPress}
           onLongPress={this.props.onLongPress}
           delayLongPress={this.props.delayLongPress}
@@ -208,7 +211,7 @@ export default class ListItem extends React.Component {
             ) : null}
             {this.props.customIcon}
           </View>
-        </TouchableNativeFeedback>
+        </TOUCH_ITEM>
       );
     }
   }
