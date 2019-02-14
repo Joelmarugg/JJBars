@@ -36,6 +36,7 @@ class OnlineWorkouts extends Component {
       workout: "",
       sections: null,
       userName: "",
+      currentDate: "",
       workoutTitleList: ""
     };
   }
@@ -63,15 +64,32 @@ class OnlineWorkouts extends Component {
       snap.forEach(child => {
         items.push({
           workoutname: child.val().workoutname,
-          user: child.val().user
+          user: child.val().user,
+          date: child.val().date
         });
       });
 
-      var names = [];
-      for (let i = 0; i < items.length; i++) {
-        names.push(items[i].workoutname);
-      }
-      this.setState({ workoutList: items, workoutNameList: names });
+      let sortedItems = items.sort(
+        (a, b) =>
+          Date.parse(
+            new Date(
+              b.date
+                .split(".")
+                .reverse()
+                .join("-")
+            )
+          ) -
+          Date.parse(
+            new Date(
+              a.date
+                .split(".")
+                .reverse()
+                .join("-")
+            )
+          )
+      );
+
+      this.setState({ workoutList: sortedItems });
     });
   }
 
@@ -169,7 +187,7 @@ class OnlineWorkouts extends Component {
               bigText={true}
               text={item.workoutname}
               userName={item.user}
-              date={"16.08.1993"}
+              date={item.date}
               online={true}
               selected={false}
               onPress={() => this.handlePress(item.workoutname)}

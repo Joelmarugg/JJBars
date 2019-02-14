@@ -37,7 +37,8 @@ class SavedWorkouts extends Component {
       sections: [],
       key: null,
       onlineWorkouts: [],
-      userName: null
+      userName: null,
+      currentDate: ""
     };
   }
 
@@ -133,6 +134,24 @@ class SavedWorkouts extends Component {
     if (this.checkFirebase()) {
       this.setYesNoModalVisible(true);
     } else {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth() + 1; //January is 0!
+      var yyyy = today.getFullYear();
+
+      if (dd < 10) {
+        dd = "0" + dd;
+      }
+
+      if (mm < 10) {
+        mm = "0" + mm;
+      }
+
+      today = dd + "." + mm + "." + yyyy;
+
+      await this.setState({
+        currentDate: today
+      });
       await AsyncStorage.getItem(this.state.workout, (err, section) => {
         this.setState({ sections: JSON.parse(section) });
       });
@@ -141,11 +160,12 @@ class SavedWorkouts extends Component {
         .database()
         .ref("workouts")
         .push({
+          date: this.state.currentDate,
           user: this.state.userName,
           workoutname: this.state.workout,
           sections: this.state.sections
         });
-      console.warn(this.state.userName);
+
       this.props.alertWithType(
         "success",
         "Workout Uploaded",
@@ -155,7 +175,24 @@ class SavedWorkouts extends Component {
   };
 
   overwriteWorkout = async () => {
-    console.warn("key is: ", this.state.key);
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+
+    today = dd + "." + mm + "." + yyyy;
+
+    await this.setState({
+      currentDate: today
+    });
 
     await AsyncStorage.getItem(this.state.workout, (err, section) => {
       this.setState({ sections: JSON.parse(section) });
@@ -166,11 +203,12 @@ class SavedWorkouts extends Component {
       .ref("workouts")
       .child(this.state.key)
       .update({
+        date: this.state.currentDate,
         user: this.state.userName,
         workoutname: this.state.workout,
         sections: this.state.sections
       });
-    console.warn(this.state.userName);
+
     this.props.alertWithType(
       "success",
       "Workout Updated",

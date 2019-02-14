@@ -123,13 +123,13 @@ class Home extends Component {
     try {
       await AsyncStorage.getItem("userName", (err, userName) => {
         this.setState({ userName: userName });
-        console.warn("the user name: ", this.state.userName);
+
         if (userName !== null) {
           this.setState({ hasUserName: true });
         }
       });
     } catch (error) {
-      console.warn("fuckit", error);
+      console.warn(error);
     }
   };
   handleTextChange = text => {
