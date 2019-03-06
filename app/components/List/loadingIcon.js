@@ -5,18 +5,24 @@ import { SocialIcon } from "react-native-elements";
 
 import styles from "./styles";
 
-const loadingIcon = () => (
-  <View style={{ flexDirection: "row", alignItems: "center" }}>
-    <SocialIcon
-      iconColor={styles.$iconColor}
-      loading={true}
-      raised={false}
-      iconSize={20}
-    />
-    <Text style={styles.loadingIconText}>
-      Loading Exercises..
-    </Text>
-  </View>
-);
+const LoadingIcon = props => {
+  const {
+    loadingText = "Loading Exercises..",
 
-export default loadingIcon;
+    iconColor = styles.$iconColor
+  } = props;
+
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <SocialIcon
+        iconColor={iconColor}
+        loading={true}
+        raised={false}
+        iconSize={20}
+      />
+      <Text style={styles.loadingText}>{loadingText}</Text>
+    </View>
+  );
+};
+
+export default LoadingIcon;

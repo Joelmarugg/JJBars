@@ -16,7 +16,7 @@ import {
   SectionHeader,
   Separator,
   placeHolder,
-  loadingIcon
+  LoadingIcon
 } from "../components/List";
 import { InputWithButton } from "../components/TextInput";
 import { styles } from "../components/TextInput";
@@ -708,7 +708,7 @@ class CreateWorkouts extends Component {
               keyExtractor={(item, index) => index.toString()}
               showsVerticalScrollIndicator={false}
               ItemSeparatorComponent={Separator}
-              ListEmptyComponent={loadingIcon}
+              ListEmptyComponent={LoadingIcon}
             />
           </View>
           <View style={{ width: 3 }} />

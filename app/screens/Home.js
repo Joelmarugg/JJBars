@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Constants, FileSystem, Asset, SQLite } from "expo";
 import * as firebase from "firebase";
+
+import { LoadingIcon } from "../components/List";
 import { InputWithButton } from "../components/TextInput";
 import { Container } from "../components/Container";
 import { Logo } from "../components/Logo";
@@ -25,7 +27,7 @@ class Home extends Component {
     this.state = {
       isLoadingComplete: false, //not used!!
       userName: null,
-      hasUserName: false
+      hasUserName: null
     };
     //Initialize firebase
     if (!firebase.apps.length) {
@@ -126,6 +128,8 @@ class Home extends Component {
 
         if (userName !== null) {
           this.setState({ hasUserName: true });
+        } else {
+          this.setState({ hasUserName: false });
         }
       });
     } catch (error) {
@@ -148,7 +152,34 @@ class Home extends Component {
   };
 
   render() {
-    if (this.state.hasUserName) {
+    if (this.state.hasUserName === null) {
+      return (
+        <Container>
+          <StatusBar translucent={false} barStyle="light-content" />
+          <View
+            style={{
+              flex: 1,
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: STATUSBAR_HEIGHT
+            }}
+          >
+            <View>
+              <LoadingIcon loadingText={"Loading.."} iconColor={"#8a2727"} />
+            </View>
+            <View
+              style={{
+                marginTop: 20,
+                height: 300
+              }}
+            >
+              <Logo />
+            </View>
+          </View>
+        </Container>
+      );
+    } else if (this.state.hasUserName) {
       return (
         <Container>
           <View
@@ -158,7 +189,8 @@ class Home extends Component {
               justifyContent: "flex-start",
               marginTop: STATUSBAR_HEIGHT
             }}
-          >
+          />
+          <View>
             <Text style={{ padding: 10 }}>
               Welcome Back {this.state.userName}!
             </Text>
@@ -218,22 +250,31 @@ class Home extends Component {
               flex: 1,
               width: "100%",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              marginTop: STATUSBAR_HEIGHT
             }}
           >
-            <StatusBar translucent={false} barStyle="light-content" />
-            <InputWithButton
-              buttonText={"Save Name"}
-              value={null}
-              placeholder={"Enter Your Username.."}
-              editable={true}
-              onPress={this.handleSaveButton}
-              onChangeText={text => this.handleTextChange(text)}
-              clearTextOnFocus={true}
-            />
-            <Logo />
+            <View>
+              <StatusBar translucent={false} barStyle="light-content" />
+              <InputWithButton
+                buttonText={"Save Name"}
+                value={null}
+                placeholder={"Enter Your Username.."}
+                editable={true}
+                onPress={this.handleSaveButton}
+                onChangeText={text => this.handleTextChange(text)}
+                clearTextOnFocus={true}
+              />
+            </View>
+            <View
+              style={{
+                marginTop: 20,
+                height: 300
+              }}
+            >
+              <Logo />
+            </View>
           </View>
-
           <TouchableOpacity
             style={{
               padding: 10,

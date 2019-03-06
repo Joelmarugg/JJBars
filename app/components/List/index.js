@@ -3,7 +3,7 @@ import Separator from "./Separator";
 import styles from "./styles";
 import ListEnd from "./ListEnd";
 import placeHolder from "./placeHolder";
-import loadingIcon from "./loadingIcon";
+import LoadingIcon from "./LoadingIcon";
 import SectionHeader from "./SectionHeader";
 
 export {
@@ -12,6 +12,6 @@ export {
   Separator,
   ListEnd,
   placeHolder,
-  loadingIcon,
+  LoadingIcon,
   styles
 };

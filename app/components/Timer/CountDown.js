@@ -63,16 +63,16 @@ class CountDown extends Component {
     }
   };
 
-  decrementClock = () => {
+  decrementClock = async () => {
     if (this.state.timer === 0) {
       clearInterval(this.clockCall);
       this.setState({ icon: "-refresh" });
 
-      setTimeout(() => {
+      await setTimeout(() => {
         this.makeSound("finish");
         Vibration.vibrate(250);
       }, 500);
-      this.makeSound("finish");
+      await this.makeSound("finish");
       Vibration.vibrate(250);
     } else {
       this.setState(prevstate => ({ timer: prevstate.timer - 1 }));
@@ -80,9 +80,6 @@ class CountDown extends Component {
   };
 
   makeSound = async sound => {
-    /*const soundObject = new Expo.Audio.Sound();
-    soundObject.setOnPlaybackStatusUpdate(this._onPlaybackStatusUpdate);*/
-
     try {
       if (sound === "start") {
         const soundObject = new Expo.Audio.Sound();
