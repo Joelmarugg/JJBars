@@ -198,7 +198,6 @@ class Home extends Component {
           <View
             style={{
               flex: 1,
-
               width: "100%"
             }}
           >
@@ -208,7 +207,6 @@ class Home extends Component {
             <View
               style={{
                 flex: 1,
-
                 width: "100%",
                 alignItems: "center",
                 justifyContent: "center"
